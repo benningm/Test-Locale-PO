@@ -39,7 +39,7 @@ sub po_file_ok {
 	my @no_msgstr;
 	my @fuzzy;
 	foreach my $po ( @$content ) {
-		if( $opts->{'empty'} && ( ! defined $po->msgstr || $po->msgstr =~ m/^[- ]?$/ ) ) {
+		if( $opts->{'empty'} && ( ! defined $po->msgstr || $po->msgstr =~ m/^["\- ]*$/ ) ) {
 			push( @no_msgstr, $po );
 		}
 		if( $opts->{'fuzzy'} && $po->has_flag('fuzzy') ) {
@@ -92,6 +92,8 @@ Will run the check against the specified file.
 
 =head3 options
 
+=over
+
 =item empty (default 1)
 
 check for empty translations.
@@ -99,6 +101,8 @@ check for empty translations.
 =item fuzzy (default 1)
 
 check for translations flagged as fuzzy.
+
+=back
 
 =head1 DEPENDENCIES
 
