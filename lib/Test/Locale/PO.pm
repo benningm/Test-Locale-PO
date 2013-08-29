@@ -39,7 +39,17 @@ sub po_file_ok {
 	my @no_msgstr;
 	my @fuzzy;
 	foreach my $po ( @$content ) {
-		if( $opts->{'empty'} && ( ! defined $po->msgstr || $po->msgstr =~ m/^["\- ]*$/ ) ) {
+		if( $opts->{'empty'} ) {
+			# check for a simple translation
+			if ( defined $po->msgstr && $po->msgstr !~ m/^["\- ]*$/ ) {
+				next;
+			}
+			# check if plurals are involved
+			if( defined $po->msgid_plural
+					&& defined $po->msgstr_n->{"0"}
+					&& $po->msgstr_n->{"0"} !~ m/^["\- ]*$/ ) {
+				next;
+			}
 			push( @no_msgstr, $po );
 		}
 		if( $opts->{'fuzzy'} && $po->has_flag('fuzzy') ) {
