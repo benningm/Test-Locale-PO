@@ -42,15 +42,14 @@ sub po_file_ok {
 		if( $opts->{'empty'} ) {
 			# check for a simple translation
 			if ( defined $po->msgstr && $po->msgstr !~ m/^["\- ]*$/ ) {
-				next;
 			}
 			# check if plurals are involved
-			if( defined $po->msgid_plural
+			elsif( defined $po->msgid_plural
 					&& defined $po->msgstr_n->{"0"}
 					&& $po->msgstr_n->{"0"} !~ m/^["\- ]*$/ ) {
-				next;
+			} else {
+				push( @no_msgstr, $po );
 			}
-			push( @no_msgstr, $po );
 		}
 		if( $opts->{'fuzzy'} && $po->has_flag('fuzzy') ) {
 			push( @fuzzy, $po );
